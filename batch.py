@@ -13,7 +13,7 @@ scene = gs.scene(
         camera_lookat = (0.0,0.0,0.5),
         camera_fov = 40,
     ),
-    rigid_otions = gs.options.RigidOptions(
+    rigid_options = gs.options.RigidOptions(
         dt                  = 0.01,            
     ),
                  
@@ -34,10 +34,9 @@ scene.build(n_envs=B,env_spacing=(1.0,1.0))
 #control all robots
 franka.control_dofs_postion(
         torch.tile(
-            torch.tensor([0,0,0,-1.0,0,1.0,0,0.02,0.02],device=gs.device),(B,1)
+            torch.tensor([0,0,0,-1.0,0,1.0,0,0.02,0.02],device=gs.device),(3000,1)
     ),
 )
 
 for i in range(1000):
     scene.step()
-    
