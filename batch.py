@@ -28,3 +28,16 @@ franka = scene.add_entity(
 )
 ################################ build ###########################
 # create 20 parallel environments
+B=20
+scene.build(n_envs=B,env_spacing=(1.0,1.0))
+
+#control all robots
+franka.control_dofs_postion(
+        torch.tile(
+            torch.tensor([0,0,0,-1.0,0,1.0,0,0.02,0.02],device=gs.device),(B,1)
+    ),
+)
+
+for i in range(1000):
+    scene.step()
+    
