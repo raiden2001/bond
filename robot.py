@@ -21,11 +21,11 @@ scene = gs.Scene(
     ),             
     renderer = gs.renderers.Rasterizer(), #using rasterizer for camera rendering 
 ) #shows the scene 
-plane = scene.add_entity(gs.morphs.Plane())
+plane = scene.add_entity(gs.morphs.Plane(),)
 franka = scene.add_entity(gs.morphs.MJCF(file='xml/franka_emika_panda/panda.xml'),)
 scene.build() #builds the entity
 
-for i in range(1000):
+for i in range(120):
     scene.step()
 
 #Quaternion representing a 90-degree rotation around the z-axis
