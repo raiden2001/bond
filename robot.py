@@ -1,4 +1,5 @@
 import genesis as gs 
+import numpy as np
 gs.init(backend=gs.cpu)
 
 scene = gs.Scene(
@@ -24,9 +25,22 @@ scene = gs.Scene(
 plane = scene.add_entity(gs.morphs.Plane(),)
 franka = scene.add_entity(gs.morphs.MJCF(file='xml/franka_emika_panda/panda.xml'),)
 scene.build() #builds the entity
+#render rgb,depth,segmentation mask and normal map
+rgb,depth,segmentation,normal = cam.render(depth=True,segmentation=True,normal=True)
+#start camera recording, Once this is started,all the rgb images rendered will be recorder
+cam.start_recording()
 
 for i in range(120):
     scene.step()
 
+    # Change camera position
+    cam.set_pose(
+        pos = (3.0* np.sin(i / 60), 3.0 * np.cos(i / 60),2.5),
+        lookat = (0,0,0.5),
+    )
+    cam.render()
+
+#Stop recording and save video. IF `filename` is not specified is not specfiic, a name will be auto-generated 
+cam.stop_recording(save_to_filename='video.mp4',fps=60)
 #Quaternion representing a 90-degree rotation around the z-axis
 rotation = [0.707,0,0,0.707] #[w,x,y,z]
